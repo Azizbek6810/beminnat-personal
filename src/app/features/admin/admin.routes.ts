@@ -11,5 +11,5 @@ export const routes: Routes = [
         loadComponent: () => import('./features/category/category.component'),
       },
     ],
-  },
+  }
 ];

@@ -1,11 +1,18 @@
-{{log()}}
 <!-- <nz-table #basicTable [nzData]="(data | async) || []"> -->
-<nz-table #basicTable [nzData]="data()">
+<div class="mb-4">
+  <button nz-button nzType="primary" (click)="openModal()">
+    Create category
+  </button>
+</div>
+<nz-table #basicTable [nzData]="data()" [nzLoading]="data().length === 0">
   <thead>
     <tr>
       <th>ID</th>
       <th>Name</th>
       <th>Description</th>
+      <th>Created date</th>
+      <th>Phone</th>
+      <th>Email</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -15,6 +22,10 @@
         <td>{{ data.id }}</td>
         <td>{{ data.name }}</td>
         <td>{{ data.description }}</td>
+        <td>{{ data.createdDate | date: "dd.MM.yyyy" }}</td>
+        <td>{{ data.phone }}</td>
+        <td>{{ data.email }}</td>
+
         <td>
           <a>Edit</a>
           <nz-divider nzType="vertical"></nz-divider>
@@ -30,3 +41,82 @@
     }
   </tbody>
 </nz-table>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Create modal"
+  (nzOnCancel)="closeModal()"
+  (nzOnOk)="submit()"
+  [nzOkText]="'Save'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input
+            nz-input
+            name="name"
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter category name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="email">E-mail</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input
+            nz-input
+            name="email"
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="date">Created date:</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-date-picker
+            nzPlaceHolder="Enter your date"
+            name="createdDate"
+            id="date"
+            formControlName="createdDate"
+            [style.width.px]="315"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="phone">Phone</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-input-number
+            name="phone"
+            id="phone"
+            formControlName="phone"
+            [style.width.px]="315"
+            [nzControls]="false"
+            nzPlaceHolder="901234567"
+          >
+            <span nzInputAddonBefore> +998</span>
+          </nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="description"
+          >Description</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16">
+          <textarea
+            nz-input
+            formControlName="description"
+            placeholder="Enter your description"
+            [nzAutosize]="{ minRows: 2, maxRows: 4 }"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
